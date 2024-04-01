@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="textView" type="id">textView</item>
+    <item name="textViewSunrise" type="id">sunrise</item>
+    <item name="textViewSunset" type="id">sunset</item>
+    <item name="showToastButton" type="id">toastButton</item>
+    <item name="showSnackbarButton" type="id">snack-button</item>
+    <item name="showAlertDialogButton" type="id">alert-button</item>
+    <item name="recyclerView" type="id">recycle</item>
+</resources>

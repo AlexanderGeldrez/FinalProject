@@ -1,0 +1,38 @@
+<!-- item_layout.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Beach Image -->
+    <ImageView
+        android:id="@+id/imageViewBeach"
+        android:contentDescription="@string/Image_of_beech"
+
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sunsiresunset" />
+
+    <!-- Beach Name -->
+    <TextView
+        android:id="@+id/textViewBeachName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Beach Name"
+        android:textSize="18sp"
+        android:textColor="@android:color/black" />
+
+    <!-- Beach Location -->
+    <TextView
+        android:id="@+id/textViewBeachLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Location"
+        android:textSize="14sp"
+        android:textColor="@android:color/black" />
+
+</LinearLayout>
