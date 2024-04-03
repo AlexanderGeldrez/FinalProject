@@ -14,7 +14,7 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
     private List<String> definitions;
 
     // Constructor
-    public DefinitionAdapter() {
+    public DefinitionAdapter(List<String> itemsFromSharedPreferences) {
         this.definitions = definitions;
     }
 
@@ -24,7 +24,7 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvDefinition = itemView.findViewById(R.id.tvDefinition);
+            tvDefinition = itemView.findViewById(R.id.textViewDefinition);
         }
     }
 

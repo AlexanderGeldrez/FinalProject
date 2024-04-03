@@ -1,138 +1,127 @@
 package algonquin.cst2335.finalproject;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-
+import algonquin.cst2335.finalproject.R;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText searchWord;
-    private Button btnSearch;
-    private RecyclerView rvDefinitions;
-    private DefinitionAdapter adapter; // Define adapter variable
-    private RecyclerView rvSavedSearchTerms;
-    private SavedSearchAdapter savedSearchAdapter;
     private Toolbar toolbar;
+    private RecyclerView recyclerView;
+    private DefinitionAdapter adapter;
+    private EditText editText;
+    private Button addButton;
+    private SharedPreferences sharedPreferences;
+private DictionaryDatabaseHelper dictionary;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
+        // Setup Toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        searchWord = findViewById(R.id.editTextWord);
-        btnSearch = findViewById(R.id.buttonSearch);
-        rvDefinitions = findViewById(R.id.recyclerViewDefinitions);
 
-        // Initialize RecyclerView
-        rvDefinitions.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new DefinitionAdapter(); // Initialize adapter
-        rvDefinitions.setAdapter(adapter);
-        rvSavedSearchTerms = findViewById(R.id.rvSavedSearchTerms);
-        savedSearchAdapter = new SavedSearchAdapter();
+        // Setup RecyclerView
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-// Set layout manager and adapter for RecyclerView
-        rvSavedSearchTerms.setLayoutManager(new LinearLayoutManager(this));
-        rvSavedSearchTerms.setAdapter(savedSearchAdapter);
+        // Initialize RecyclerView adapter
+        adapter = new DefinitionAdapter(getItemsFromSharedPreferences());
+        recyclerView.setAdapter(adapter);
 
-// Retrieve saved search terms from SharedPreferences and update RecyclerView
-        SharedPreferences sharedPreferences = getSharedPreferences("search_preferences", MODE_PRIVATE);
-        String savedSearchTerm = sharedPreferences.getString("searchTerm", "");
-        searchWord.setText(savedSearchTerm);
-        Map<String, ?> allEntries = sharedPreferences.getAll();
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            savedSearchAdapter.addSearchTerm(entry.getValue().toString());
-        }
-        if (!allEntries.isEmpty()) {
-            findViewById(R.id.btnDelete).setVisibility(View.VISIBLE);
-        }
-        btnSearch.setOnClickListener(new View.OnClickListener() {
+        // Setup EditText and Button
+        editText = findViewById(R.id.editText);
+        addButton = findViewById(R.id.addButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String word = searchWord.getText().toString().trim();
-                if (!word.isEmpty()) {
-                    constructUrl(word);
-                } else {
-                    Toast.makeText(MainActivity.this, "Please enter a word", Toast.LENGTH_SHORT).show();
-                }
+                addItem();
             }
         });
     }
+
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Retrieve saved search term when activity is resumed
-        SharedPreferences sharedPreferences = getSharedPreferences("search_preferences", MODE_PRIVATE);
-        String savedSearchTerm = sharedPreferences.getString("searchTerm", "");
-        searchWord.setText(savedSearchTerm);
-    }
-    private void constructUrl(String word) {
-        // Construct URL for searching definitions
-        String apiUrl = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
-        makeRequest(apiUrl);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
-    private void makeRequest(String apiUrl) {
-        // Make a request using Volley
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest request = new StringRequest(Request.Method.GET, apiUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Handle the response from the API
-                        handleResponse(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle error
-                        Toast.makeText(MainActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
 
-        // Add the request to the RequestQueue
-        queue.add(request);
-    }
-
-    private void handleResponse(String response) {
-        try {
-            JSONArray jsonArray = new JSONArray(response);
-            JSONObject jsonObject = jsonArray.getJSONObject(0);
-
-            JSONArray meanings = jsonObject.getJSONArray("meanings");
-            List<String> definitions = new ArrayList<>();
-            for (int i = 0; i < meanings.length(); i++) {
-                JSONObject meaning = meanings.getJSONObject(i);
-                String definition = meaning.getString("definition");
-                definitions.add(definition);
-            }
-            adapter.setDefinitions(definitions); // Update RecyclerView with definitions
-        } catch (JSONException e) {
-            e.printStackTrace();
+        switch (id) {
+            case R.id.action_settings:
+                Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
+                return true;
+           case R.id.action_help:
+                showHelpDialog();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void addItem() {
+        String newItem = editText.getText().toString().trim();
+        if (!newItem.isEmpty()) {
+            // Add item to SharedPreferences
+            addNewItemToSharedPreferences(newItem);
+
+            // Add item to RecyclerView
+            adapter.addItem(newItem);
+
+            // Clear EditText
+            editText.getText().clear();
+        } else {
+            Toast.makeText(this, "Enter item first", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private List<String> getItemsFromSharedPreferences() {
+        List<String> items = new ArrayList<>();
+        int itemCount = sharedPreferences.getInt("itemCount", 0);
+        for (int i = 0; i < itemCount; i++) {
+            String item = sharedPreferences.getString("item" + i, "");
+            if (!item.isEmpty()) {
+                items.add(item);
+            }
+        }
+        return items;
+    }
+
+    private void addNewItemToSharedPreferences(String newItem) {
+        int itemCount = sharedPreferences.getInt("itemCount", 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("item" + itemCount, newItem);
+        editor.putInt("itemCount", itemCount + 1);
+        editor.apply();
+    }
+
+    private void showHelpDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Help");
+        builder.setMessage("This is a help dialog.");
+        builder.setPositiveButton("OK", null);
+        builder.show();
     }
 }

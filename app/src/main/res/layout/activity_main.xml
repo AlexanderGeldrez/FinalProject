@@ -3,57 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editTextWord"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter a word"
-        android:layout_margin="16dp"/>
-    <Button
-        android:id="@+id/btnDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete"
-        android:visibility="gone" />
-    <Button
-        android:id="@+id/buttonSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editTextWord"
-        android:text="Search"
-        android:layout_margin="16dp"/>
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:elevation="4dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true">
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
-        <!-- Toolbar Title -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:layout_gravity="center"/>
-    </androidx.appcompat.widget.Toolbar>
-
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewDefinitions"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/buttonSearch"
-        android:layout_marginTop="16dp"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSavedSearchTerms"
+        android:layout_below="@id/toolbar"
+        android:padding="8dp" />
+
+    <!-- EditText -->
+    <EditText
+        android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:visibility="gone" />
+        android:layout_below="@id/recyclerView"
+        android:layout_margin="8dp"
+        android:hint="Enter item"
+        android:inputType="text" />
+
+    <!-- Add Button -->
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editText"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="8dp"
+        android:text="Add" />
+
 </RelativeLayout>

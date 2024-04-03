@@ -1,4 +1,5 @@
 package algonquin.cst2335.finalproject;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,66 +11,71 @@ import java.util.List;
 
 public class DictionaryDatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "dictionary.db";
     private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "items_db";
 
-    private static final String TABLE_DEFINITIONS = "definitions";
-    private static final String COLUMN_ID = "_id";
-    private static final String COLUMN_WORD = "word";
-    private static final String COLUMN_DEFINITION = "definition";
-
-    // SQL statement to create the definitions table
-    private static final String CREATE_TABLE_DEFINITIONS = "CREATE TABLE " +
-            TABLE_DEFINITIONS + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-            COLUMN_WORD + " TEXT," +
-            COLUMN_DEFINITION + " TEXT" +
-            ")";
-
-    private SQLiteDatabase db;
+    private static final String TABLE_ITEMS = "item";
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_NAME = "name";
 
     public DictionaryDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        db = getWritableDatabase();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE_DEFINITIONS);
+        String CREATE_ITEMS_TABLE = "CREATE TABLE " + TABLE_ITEMS +
+                "(" + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_NAME + " TEXT" + ")";
+        db.execSQL(CREATE_ITEMS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DEFINITIONS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS);
         onCreate(db);
     }
 
-    public void addDefinition(String word, String definition) {
+    public void addItem(Item item) {
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_WORD, word);
-        values.put(COLUMN_DEFINITION, definition);
-        db.insert(TABLE_DEFINITIONS, null, values);
+        values.put(COLUMN_NAME, item.getName());
+        db.insert(TABLE_ITEMS, null, values);
+        db.close();
     }
 
-    public List<String> getDefinitions(String word) {
-        List<String> definitions = new ArrayList<>();
-        Cursor cursor = db.query(TABLE_DEFINITIONS, new String[]{COLUMN_DEFINITION}, COLUMN_WORD + "=?", new String[]{word}, null, null, null);
-        if (cursor != null) {
-            int columnIndex = cursor.getColumnIndex(COLUMN_DEFINITION);
-            if (columnIndex != -1) {
-                while (cursor.moveToNext()) {
-                    String definition = cursor.getString(columnIndex);
-                    definitions.add(definition);
+    public List<Item> getAllItems() {
+        List<Item> itemList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_ITEMS;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            int idColumnIndex = cursor.getColumnIndex(COLUMN_ID);
+            int nameColumnIndex = cursor.getColumnIndex(COLUMN_NAME);
+
+            do {
+                int id = cursor.getInt(idColumnIndex);
+                String name = cursor.getString(nameColumnIndex);
+
+                if (id >= 0) {
+                    Item item = new Item();
+                    item.setId(id);
+                    item.setName(name);
+                    itemList.add(item);
+                } else {
+                    // Handle invalid id
                 }
-            }
-            cursor.close();
+            } while (cursor.moveToNext());
         }
-        return definitions;
+
+        cursor.close();
+        db.close();
+        return itemList;
     }
 
-
-
-    public void deleteDefinition(String word, String definition) {
-        db.delete(TABLE_DEFINITIONS, COLUMN_WORD + "=? AND " + COLUMN_DEFINITION + "=?", new String[]{word, definition});
+    public void deleteItem(Item item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_ITEMS, COLUMN_ID + " = ?", new String[]{String.valueOf(item.getId())});
+        db.close();
     }
 }
