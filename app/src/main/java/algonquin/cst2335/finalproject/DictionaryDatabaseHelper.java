@@ -54,14 +54,20 @@ public class DictionaryDatabaseHelper extends SQLiteOpenHelper {
     public List<String> getDefinitions(String word) {
         List<String> definitions = new ArrayList<>();
         Cursor cursor = db.query(TABLE_DEFINITIONS, new String[]{COLUMN_DEFINITION}, COLUMN_WORD + "=?", new String[]{word}, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                definitions.add(cursor.getString(cursor.getColumnIndex(COLUMN_DEFINITION)));
-            } while (cursor.moveToNext());
+        if (cursor != null) {
+            int columnIndex = cursor.getColumnIndex(COLUMN_DEFINITION);
+            if (columnIndex != -1) {
+                while (cursor.moveToNext()) {
+                    String definition = cursor.getString(columnIndex);
+                    definitions.add(definition);
+                }
+            }
             cursor.close();
         }
         return definitions;
     }
+
+
 
     public void deleteDefinition(String word, String definition) {
         db.delete(TABLE_DEFINITIONS, COLUMN_WORD + "=? AND " + COLUMN_DEFINITION + "=?", new String[]{word, definition});

@@ -45,9 +45,7 @@ public class MainActivity extends AppCompatActivity {
         searchWord = findViewById(R.id.editTextWord);
         btnSearch = findViewById(R.id.buttonSearch);
         rvDefinitions = findViewById(R.id.recyclerViewDefinitions);
-        SharedPreferences sharedPreferences = getSharedPreferences("search_preferences", MODE_PRIVATE);
-        String savedSearchTerm = sharedPreferences.getString("searchTerm", "");
-        searchWord.setText(savedSearchTerm);
+
         // Initialize RecyclerView
         rvDefinitions.setLayoutManager(new LinearLayoutManager(this));
         adapter = new DefinitionAdapter(); // Initialize adapter
@@ -61,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
 // Retrieve saved search terms from SharedPreferences and update RecyclerView
         SharedPreferences sharedPreferences = getSharedPreferences("search_preferences", MODE_PRIVATE);
+        String savedSearchTerm = sharedPreferences.getString("searchTerm", "");
+        searchWord.setText(savedSearchTerm);
         Map<String, ?> allEntries = sharedPreferences.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             savedSearchAdapter.addSearchTerm(entry.getValue().toString());

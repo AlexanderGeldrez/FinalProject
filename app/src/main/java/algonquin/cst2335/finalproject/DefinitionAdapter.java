@@ -24,7 +24,7 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvDefinition = itemView.findViewById(R.id.);
+            tvDefinition = itemView.findViewById(R.id.tvDefinition);
         }
     }
 
