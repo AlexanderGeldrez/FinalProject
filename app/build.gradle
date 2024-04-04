@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-
+    implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.android.volley:volley:1.2.1' // Volley library
     implementation 'androidx.appcompat:appcompat:1.6.1' // AppCompat library for backward compatibility
     implementation 'com.google.android.material:material:1.5.0' // Material Components library

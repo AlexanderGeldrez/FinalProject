@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dictionary App</string>
+    <string name="dictionary_title">" Recherche dans le dictionnaire"</string>
+    <string name="hint_enter_word">" Entrez un mot..."</string>
+    <string name="btn_search">" recherche"</string>
+    <string name="btn_add_to_favorites">" Ajouter aux Favoris"</string>
+    <string name="btn_view_favorites">Afficher les favoris</string>
+    <string name="detail_title">" Détail de l'élément du dictionnaire"</string>
+    <string name="btn_delete_from_favorites">" Supprimer des favoris"</string>
+    <string name="menu_help">" aide"</string>
+    <string name="menu_clear_history">" Effacer l'historique"</string>
+    <string name="dialog_confirmation_title">" confirmation"</string>
+    <string name="dialog_confirmation_message">Êtes-vous sûr de bien vouloir supprimer cet élément?</string>
+    <string name="dialog_positive_button">Oui</string>
+    <string name="dialog_negative_button">no</string>
+    <string name="toast_added_to_favorites">Ajouté aux favoris</string>
+    <string name="toast_removed_from_favorites">Supprimé des favoris</string>
+    <string name="snackbar_deleted_from_favorites">" Élément supprimé des Favoris"</string>
+    <string name="alert_dialog_help_title">aide</string>
+    <string name="alert_dialog_help_message">Instructions pour utiliser l\'application...</string>
+</resources>

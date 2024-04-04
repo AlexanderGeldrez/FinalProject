@@ -1,91 +1,97 @@
 package algonquin.cst2335.finalproject;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.android.material.snackbar.Snackbar;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SearchActivity apiClient;
-    private EditText searchEditText;
-    private RecyclerView wordRecyclerView;
-    private WordAdapter wordAdapter;
-    private List<Word> wordList;
+    private static final String PREF_SEARCH_TERM = "search_term";
+    private Toolbar toolbar;
+    private RecyclerView recyclerView;
+    private SearchTermAdapter searchTermAdapter;
+    private List<String> savedSearchTerms = new ArrayList<>();
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        apiClient = new SearchActivity(this);
+        // Initialize toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        searchEditText = findViewById(R.id.search_edit_text);
-        wordRecyclerView = findViewById(R.id.word_recycler_view);
-        wordList = new ArrayList<>();
+        // Initialize RecyclerView
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        savedSearchTerms = new ArrayList<>();
+        searchTermAdapter = new SearchTermAdapter(savedSearchTerms);
+        recyclerView.setAdapter(searchTermAdapter);
+        searchTermAdapter.notifyDataSetChanged();
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
 
-        wordAdapter = new WordAdapter(wordList, this);
-        wordRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        wordRecyclerView.setAdapter(wordAdapter);
-
-        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                String word = searchEditText.getText().toString();
-                searchWord(word);
-                return true;
-            }
-            return false;
-        });
+        // Load saved search terms from SharedPreferences
+        loadSearchTerms();
     }
 
-    public void searchWord(String word) {
-        apiClient.searchWord(word, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                wordList.clear();
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject jsonObject = response.getJSONObject(i);
-                        JSONArray wordsJsonArray = jsonObject.getJSONArray("words");
-                        for (int j = 0; j < wordsJsonArray.length(); j++) {
-                            JSONObject wordJsonObject = wordsJsonArray.getJSONObject(j);
-                            String wordText = wordJsonObject.getString("text");
-                            String phoneticText = wordJsonObject.getString("phonetic");
-                            String partOfSpeechText = wordJsonObject.getString("partOfSpeech");
-                            String definitionText = wordJsonObject.getString("definition");
-                            String exampleText = wordJsonObject.optString("example", "");
-                            Word wordObject = new Word(wordText, phoneticText, partOfSpeechText, definitionText, exampleText);
-                            wordList.add(wordObject);
-                        }
-                    } catch (Exception e) {
-                        Log.e("SearchActivity", e.getMessage());
-                    }
-                }
-                wordAdapter.notifyDataSetChanged();
-            }
-        },
-                new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+    // Load saved search terms from SharedPreferences
+    private void loadSearchTerms() {
+        String searchTerm = sharedPreferences.getString(PREF_SEARCH_TERM, "");
+        if (!searchTerm.isEmpty()) {
+            savedSearchTerms.add(searchTerm);
+            searchTermAdapter.notifyDataSetChanged();
+        }
+    }
 
-            }
+    // Save search term to SharedPreferences
+    private void saveSearchTerm(String term) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_SEARCH_TERM, term);
+        editor.apply();
+    }
 
+    // Handle toolbar menu options
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
-        });
+    // Handle toolbar menu item clicks
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.menu_help:
+                showHelpDialog();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    // Show help dialog
+    private void showHelpDialog() {
+        // Implement your help dialog logic here
+    }
+
+    // Handle click on a saved search term
+    private void onSearchTermClicked(String term) {
+        // Start new activity with the selected search term
+        Intent intent = new Intent(this, DictionaryActivity.class);
+        intent.putExtra("search_term", term);
+        startActivity(intent);
     }
 }
