@@ -1,4 +1,5 @@
 package algonquin.cst2335.finalproject;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -6,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -70,22 +72,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Handle toolbar menu item clicks
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.menu_help:
-                showHelpDialog();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        int id = item.getItemId();
+//        switch (id) {
+//            case R.id.menu_help:
+//                showHelpDialog();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     // Show help dialog
     private void showHelpDialog() {
-        // Implement your help dialog logic here
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Help");
+        builder.setMessage("Instructions on how to use the application...");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do something when the "OK" button is clicked
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
+
 
     // Handle click on a saved search term
     private void onSearchTermClicked(String term) {
