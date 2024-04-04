@@ -1,43 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <!-- Toolbar -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
-
-    <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:padding="8dp" />
-
-    <!-- EditText -->
     <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
+        android:id="@+id/search_edit_text"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/recyclerView"
-        android:layout_margin="8dp"
-        android:hint="Enter item"
-        android:inputType="text" />
+        android:ems="10"
+        android:hint="Search for a word"
+        app:layout_constraintEnd_toStartOf="@+id/search_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Add Button -->
     <Button
-        android:id="@+id/addButton"
+        android:id="@+id/search_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editText"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="8dp"
-        android:text="Add" />
+        android:text="Search"
+        app:layout_constraintBottom_toBottomOf="@+id/search_edit_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/search_edit_text" />
 
-</RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/word_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_edit_text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

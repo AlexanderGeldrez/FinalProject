@@ -1,4 +1,5 @@
-package algonquin.cst2335.finalproject;import android.content.Context;
+package algonquin.cst2335.finalproject;
+import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 

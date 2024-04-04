@@ -1,127 +1,91 @@
 package algonquin.cst2335.finalproject;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-import algonquin.cst2335.finalproject.R;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
-    private RecyclerView recyclerView;
-    private DefinitionAdapter adapter;
-    private EditText editText;
-    private Button addButton;
-    private SharedPreferences sharedPreferences;
-private DictionaryDatabaseHelper dictionary;
+    private SearchActivity apiClient;
+    private EditText searchEditText;
+    private RecyclerView wordRecyclerView;
+    private WordAdapter wordAdapter;
+    private List<Word> wordList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize SharedPreferences
-        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        apiClient = new SearchActivity(this);
 
-        // Setup Toolbar
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        searchEditText = findViewById(R.id.search_edit_text);
+        wordRecyclerView = findViewById(R.id.word_recycler_view);
+        wordList = new ArrayList<>();
 
-        // Setup RecyclerView
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        wordAdapter = new WordAdapter(wordList, this);
+        wordRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        wordRecyclerView.setAdapter(wordAdapter);
 
-        // Initialize RecyclerView adapter
-        adapter = new DefinitionAdapter(getItemsFromSharedPreferences());
-        recyclerView.setAdapter(adapter);
-
-        // Setup EditText and Button
-        editText = findViewById(R.id.editText);
-        addButton = findViewById(R.id.addButton);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addItem();
+        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                String word = searchEditText.getText().toString();
+                searchWord(word);
+                return true;
             }
+            return false;
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.action_settings:
-                Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
-                return true;
-           case R.id.action_help:
-                showHelpDialog();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void addItem() {
-        String newItem = editText.getText().toString().trim();
-        if (!newItem.isEmpty()) {
-            // Add item to SharedPreferences
-            addNewItemToSharedPreferences(newItem);
-
-            // Add item to RecyclerView
-            adapter.addItem(newItem);
-
-            // Clear EditText
-            editText.getText().clear();
-        } else {
-            Toast.makeText(this, "Enter item first", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private List<String> getItemsFromSharedPreferences() {
-        List<String> items = new ArrayList<>();
-        int itemCount = sharedPreferences.getInt("itemCount", 0);
-        for (int i = 0; i < itemCount; i++) {
-            String item = sharedPreferences.getString("item" + i, "");
-            if (!item.isEmpty()) {
-                items.add(item);
+    public void searchWord(String word) {
+        apiClient.searchWord(word, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                wordList.clear();
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        JSONArray wordsJsonArray = jsonObject.getJSONArray("words");
+                        for (int j = 0; j < wordsJsonArray.length(); j++) {
+                            JSONObject wordJsonObject = wordsJsonArray.getJSONObject(j);
+                            String wordText = wordJsonObject.getString("text");
+                            String phoneticText = wordJsonObject.getString("phonetic");
+                            String partOfSpeechText = wordJsonObject.getString("partOfSpeech");
+                            String definitionText = wordJsonObject.getString("definition");
+                            String exampleText = wordJsonObject.optString("example", "");
+                            Word wordObject = new Word(wordText, phoneticText, partOfSpeechText, definitionText, exampleText);
+                            wordList.add(wordObject);
+                        }
+                    } catch (Exception e) {
+                        Log.e("SearchActivity", e.getMessage());
+                    }
+                }
+                wordAdapter.notifyDataSetChanged();
             }
-        }
-        return items;
-    }
+        },
+                new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
-    private void addNewItemToSharedPreferences(String newItem) {
-        int itemCount = sharedPreferences.getInt("itemCount", 0);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("item" + itemCount, newItem);
-        editor.putInt("itemCount", itemCount + 1);
-        editor.apply();
-    }
+            }
 
-    private void showHelpDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Help");
-        builder.setMessage("This is a help dialog.");
-        builder.setPositiveButton("OK", null);
-        builder.show();
+
+        });
     }
 }

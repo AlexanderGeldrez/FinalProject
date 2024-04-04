@@ -2,4 +2,6 @@
     <string name="app_name">FinalProject</string>
     <string name="hint_search">Enter your search query</string>
     <string name="button_search">Search</string>
+    <string name="action_settings">set action</string>
+    <string name="action_help">action_help</string>
 </resources>
