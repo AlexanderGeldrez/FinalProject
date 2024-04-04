@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">FinalProject</string>
+    <string name="app_name">Deezer Song</string>
+    <string name="artist_text">Enter artist</string>
+    <string name="search">Search</string>
+    <string name="toolbar_recipe">recipe</string>
+    <string name="toolbar_dictionary">dictionary</string>
+    <string name="toolbar_sunrise">sunrise</string>
+    <string name="toolbar_help">Help</string>
+
 </resources>
