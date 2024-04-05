@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Application de recette</string>
+    <string name="recipe">Recette</string>
+    <string name="save_recipe">Enregistrer la recette</string>
+    <string name="delete_recipe">Supprimer la recette</string>
+    <string name="SearchEditText">Rechercher</string>
+    <string name="searchButton">Rechercher une recette</string>
+    <string name="viewSavedRecipesButton">Afficher les recettes enregistrées</string>
+</resources>

@@ -8,18 +8,34 @@
     android:padding="16dp"
     tools:context=".RecipeMain">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="184dp"
+            android:background="@drawable/navigation"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextColor="@color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <EditText
         android:id="@+id/searchEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter a recipe name" />
+        android:hint="Enter a recipe name"
+        tools:ignore="InvalidId" />
 
     <Button
         android:id="@+id/searchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        tools:ignore="InvalidId" />
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -31,8 +47,10 @@
         android:id="@+id/viewSavedRecipesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="8dp"
         android:text="View Saved Recipes"
-        android:layout_marginTop="8dp"/>
+        tools:ignore="InvalidId" />
 
 
 </LinearLayout>

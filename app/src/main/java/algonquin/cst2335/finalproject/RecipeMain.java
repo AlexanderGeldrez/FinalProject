@@ -4,15 +4,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,7 +39,7 @@ public class RecipeMain extends AppCompatActivity {
         searchEditText = findViewById(R.id.searchEditText);
         searchButton = findViewById(R.id.searchButton);
         recipesRecyclerView = findViewById(R.id.recipesRecyclerView);
-        viewSavedRecipesButton = findViewById(R.id.viewSavedRecipesButton); // Add this button in your layout XML
+        viewSavedRecipesButton = findViewById(R.id.viewSavedRecipesButton);
 
         recipesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         recipesAdapter = new RecipesAdapter(this, new ArrayList<>());
@@ -49,7 +54,18 @@ public class RecipeMain extends AppCompatActivity {
             openRecipeDetails(recipe.getId());
         });
 
-        viewSavedRecipesButton.setOnClickListener(view -> loadSavedRecipes());
+        // AlertDialog setup for viewSavedRecipesButton is maintained
+        viewSavedRecipesButton.setOnClickListener(view -> {
+            new AlertDialog.Builder(RecipeMain.this)
+                    .setTitle("Load Saved Recipes")
+                    .setMessage("Are you sure you want to view saved recipes?")
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                        loadSavedRecipes();
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .setIcon(R.drawable.navigation) // Ensure this drawable exists
+                    .show();
+        });
     }
 
     private void performSearch() {
@@ -61,6 +77,7 @@ public class RecipeMain extends AppCompatActivity {
                         if (response.isSuccessful() && response.body() != null) {
                             recipesAdapter.updateRecipes(response.body().getResults());
                             Log.d("API Response", "Response: " + response.body());
+                            Snackbar.make(findViewById(android.R.id.content), "Recipes loaded successfully", Snackbar.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(RecipeMain.this, "Failed to fetch recipes.", Toast.LENGTH_SHORT).show();
                         }

@@ -3,4 +3,8 @@
     <string name="recipe">Recipe</string>
     <string name="save_recipe">Save Recipe</string>
     <string name="delete_recipe">Delete Recipe</string>
+    <string name="SearchEditText">Search</string>
+    <string name="searchButton">Search Recipe</string>
+    <string name="viewSavedRecipesButton">View Saved Recipes</string>
+    <string name="home_icon_description" translatable="false">Home icon</string>
 </resources>
