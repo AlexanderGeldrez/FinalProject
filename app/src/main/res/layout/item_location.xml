@@ -17,4 +17,12 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Longitude"/>
+
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="46dp"
+        android:layout_height="32dp"
+        android:contentDescription="@string/delete"
+        android:src="@drawable/delete" />
+
 </LinearLayout>

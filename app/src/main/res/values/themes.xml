@@ -21,4 +21,13 @@
         <!-- Example overriding an attribute -->
         <item name="android:textColorSecondary">@color/textSecondaryColor</item>
     </style>
+
+    <style name="AppButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/app_icon</item>
+        <item name="android:textColor">@color/statusBarColor</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+
 </resources>

@@ -17,6 +17,9 @@ public interface LocationDao {
     @Query("DELETE FROM locations WHERE id = :id")
     void delete(int id);
 
+    @Query("DELETE FROM locations")
+    void deleteAll();
+
     @Query("SELECT * FROM locations")
     LiveData<List<Location>> getAllLocations();
 }

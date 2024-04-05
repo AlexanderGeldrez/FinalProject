@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FinalProject</string>
     <string name="latitude_hint">Enter Latitude</string>
     <string name="longitude_hint">Enter Longitude</string>
     <string name="lookup">Lookup</string>
@@ -27,5 +26,13 @@
     <string name="mandeep_activity">Mandeep</string>
     <string name="member1_activity">Mandeep Activity</string>
     <string name="member2_activity">Mandeep2 Activity</string>
-    <string name="Image_of_beech">beech image</string> <!-- Removed the newline escape as it's not needed -->
+    <string name="Image_of_beech">beech image</string>
+    <item name="btnDelete" type="id"/>
+    <item name="snackbar_container" type="id"/>
+    <item name="favoritesRecyclerView" type="id"/>
+    <item name="toolbarTitle" type="id"/>
+    <string name="app_name">ProjectFinal</string>
+    <item name="deleteAllButton" type="id"/>
+
+
 </resources>
