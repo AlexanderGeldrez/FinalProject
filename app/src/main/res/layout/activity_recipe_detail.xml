@@ -6,23 +6,38 @@
     android:padding="16dp">
 
     <ImageView
-        android:id="@+id/image_recipe"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:contentDescription="Recipe"
-        android:scaleType="centerCrop" />
+        android:id="@+id/recipeImage"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:contentDescription="@string/recipe"
+    android:scaleType="centerCrop" />
 
     <TextView
-        android:id="@+id/text_summary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
+        android:id="@+id/recipeSummary"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp" />
 
     <TextView
-        android:id="@+id/text_source_url"
-        android:layout_width="match_parent"
+        android:id="@+id/recipeSourceUrl"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:textStyle="italic" />
+
+    <Button
+        android:id="@+id/saveRecipeButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/save_recipe"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/deleteRecipeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_recipe"
         android:layout_marginTop="8dp"
-        android:textStyle="italic" />
+        android:visibility="gone"/>
 
 </LinearLayout>

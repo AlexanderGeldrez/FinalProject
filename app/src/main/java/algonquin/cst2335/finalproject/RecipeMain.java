@@ -1,11 +1,15 @@
 package algonquin.cst2335.finalproject;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -13,12 +17,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class RecipeMain extends AppCompatActivity {
 
     private EditText searchEditText;
-    private Button searchButton;
+    private Button searchButton, viewSavedRecipesButton;
     private RecyclerView recipesRecyclerView;
     private RecipesAdapter recipesAdapter;
+    private RecipeViewModel viewModel;
     private final String apiKey = "132a86e4cc03475f9bfbe3e4493a314a";
 
     @Override
@@ -29,12 +34,22 @@ public class MainActivity extends AppCompatActivity {
         searchEditText = findViewById(R.id.searchEditText);
         searchButton = findViewById(R.id.searchButton);
         recipesRecyclerView = findViewById(R.id.recipesRecyclerView);
+        viewSavedRecipesButton = findViewById(R.id.viewSavedRecipesButton); // Add this button in your layout XML
 
         recipesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         recipesAdapter = new RecipesAdapter(this, new ArrayList<>());
         recipesRecyclerView.setAdapter(recipesAdapter);
 
+        viewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+
         searchButton.setOnClickListener(view -> performSearch());
+
+        recipesAdapter.setClickListener((view, position) -> {
+            Recipe recipe = recipesAdapter.getItem(position);
+            openRecipeDetails(recipe.getId());
+        });
+
+        viewSavedRecipesButton.setOnClickListener(view -> loadSavedRecipes());
     }
 
     private void performSearch() {
@@ -46,18 +61,23 @@ public class MainActivity extends AppCompatActivity {
                         if (response.isSuccessful() && response.body() != null) {
                             recipesAdapter.updateRecipes(response.body().getResults());
                             Log.d("API Response", "Response: " + response.body());
-
+                        } else {
+                            Toast.makeText(RecipeMain.this, "Failed to fetch recipes.", Toast.LENGTH_SHORT).show();
                         }
-                        Log.d("API Response", "Response: " + response.body());
-
                     }
-
 
                     @Override
                     public void onFailure(Call<RecipeSearchResponse> call, Throwable t) {
-                        // Handle failure
+                        Toast.makeText(RecipeMain.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void loadSavedRecipes() {
+        viewModel.getAllRecipes().observe(this, recipeEntities -> {
+            // Assuming you have a method in your adapter to update the dataset
+            recipesAdapter.updateRecipesFromEntities(recipeEntities); // You may need to implement this method
+        });
     }
 
     @Override
@@ -77,4 +97,9 @@ public class MainActivity extends AppCompatActivity {
         searchEditText.setText(lastSearch);
     }
 
+    private void openRecipeDetails(int recipeId) {
+        Intent intent = new Intent(this, RecipeDetailActivity.class);
+        intent.putExtra("recipeId", recipeId);
+        startActivity(intent);
+    }
 }

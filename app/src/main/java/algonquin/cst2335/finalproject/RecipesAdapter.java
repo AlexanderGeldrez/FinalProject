@@ -1,20 +1,17 @@
 package algonquin.cst2335.finalproject;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.squareup.picasso.Picasso;
-
+import java.util.ArrayList;
 import java.util.List;
 
-public class  RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHolder> {
+public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHolder> {
 
     private List<Recipe> recipesList;
     private LayoutInflater mInflater;
@@ -33,17 +30,31 @@ public class  RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHol
         return new ViewHolder(view);
     }
 
+    // Update recipes with a new list of Recipe objects
     public void updateRecipes(List<Recipe> recipes) {
         this.recipesList = recipes;
         notifyDataSetChanged();
     }
+
+    // New method to update the adapter with RecipeEntity objects
+    public void updateRecipesFromEntities(List<RecipeEntity> entities) {
+        List<Recipe> recipes = new ArrayList<>();
+        for (RecipeEntity entity : entities) {
+            recipes.add(new Recipe(entity.id, entity.title, entity.image)); // Adjust according to your Recipe class constructor or setters
+        }
+        this.recipesList = recipes;
+        notifyDataSetChanged();
+    }
+
+
+
+
 
     // Binds data to each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Recipe recipe = recipesList.get(position);
         holder.myTextView.setText(recipe.getTitle());
-        // Use Picasso or Glide to load the image
         Picasso.get().load(recipe.getImage()).into(holder.myImageView);
     }
 
@@ -71,19 +82,15 @@ public class  RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHol
         }
     }
 
-    // Convenience method for getting data at click position
-    Recipe getItem(int id) {
+    public Recipe getItem(int id) {
         return recipesList.get(id);
     }
 
-    // Parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
 
-    // Allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
+    public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 }
-

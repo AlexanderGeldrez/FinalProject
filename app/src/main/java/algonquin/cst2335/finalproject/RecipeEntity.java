@@ -7,8 +7,9 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "recipes")
 public class RecipeEntity {
 
-    @PrimaryKey
-    public int id; // Assuming the ID is unique for each recipe
+
+    @PrimaryKey(autoGenerate = true)
+    public int id; // Letting Room auto-generate ID
 
     @ColumnInfo(name = "title")
     public String title;
@@ -21,6 +22,4 @@ public class RecipeEntity {
 
     @ColumnInfo(name = "source_url")
     public String sourceUrl;
-
-    // Constructor, Getters, and Setters...
 }

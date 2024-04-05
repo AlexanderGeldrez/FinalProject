@@ -11,4 +11,5 @@ public interface SpoonacularAPIService {
 
     @GET("recipes/{id}/information")
     Call<RecipeDetailResponse> getRecipeDetails(@Path("id") int id, @Query("apiKey") String apiKey);
+
 }
