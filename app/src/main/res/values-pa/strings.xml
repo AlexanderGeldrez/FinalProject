@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="latitude_hint">ਅਕਸ਼ਾਂਸ ਦਰਜ ਕਰੋ</string>
+    <string name="longitude_hint">ਦੇਸ਼ਾਂਤਰ ਦਰਜ ਕਰੋ</string>
+    <string name="lookup">ਖੋਜ</string>
+    <string name="show_toast">ਟੋਸਟ ਦਿਖਾਓ</string>
+    <string name="show_snackbar">ਸਨੈਕਬਾਰ ਦਿਖਾਓ</string>
+    <string name="show_alert_dialog">ਅਲਰਟ ਡਾਇਲਾਗ ਦਿਖਾਓ</string>
+    <string name="latitude">ਅਕਸ਼ਾਂਸ: </string>
+    <string name="longitude">ਦੇਸ਼ਾਂਤਰ: </string>
+    <string name="sunrise">ਸੂਰਜ ਉਗਵਾਣ: </string>
+    <string name="sunset">ਸੂਰਜ ਛਿਪਣ: </string>
+    <string name="delete">ਮਿਟਾਓ</string>
+    <string name="save">ਸੇਵ ਕਰੋ</string>
+    <string name="update">ਅੱਪਡੇਟ ਕਰੋ</string>
+    <string name="favorite_locations">ਪਸੰਦੀਦਾ ਸਥਾਨ</string>
+    <string name="no_data">ਕੋਈ ਡਾਟਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ</string>
+    <string name="error_fetching_data">ਡਾਟਾ ਲਿਆਉਣ ਵਿੱਚ ਗਲਤੀ</string>
+    <string name="loading">ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ...</string>
+    <string name="please_wait">ਕਿਰਪਾ ਕਰਕੇ ਉਡੀਕੋ</string>
+    <string name="add_favorite">ਪਸੰਦੀਦਾ ਵਿੱਚ ਜੋੜੋ</string>
+    <string name="remove_favorite">ਪਸੰਦੀਦਾ ਵਿੱਚੋਂ ਹਟਾਓ</string>
+    <string name="details">ਵੇਰਵੇ</string>
+    <string name="search_hint">ਖੋਜ...</string>
+    <string name="last_search">ਆਖਰੀ ਖੋਜ: </string>
+    <string name="mandeep_activity">ਮਨਦੀਪ</string>
+    <string name="member1_activity">ਮਨਦੀਪ ਗਤੀਵਿਧੀ</string>
+    <string name="member2_activity">ਮਨਦੀਪ2 ਗਤੀਵਿਧੀ</string>
+    <string name="Image_of_beech">ਬੀਚ ਦੀ ਤਸਵੀਰ</string>
+    <item name="btnDelete" type="id"/>
+    <item name="snackbar_container" type="id"/>
+    <item name="favoritesRecyclerView" type="id"/>
+    <item name="toolbarTitle" type="id"/>
+    <string name="app_name">ਪ੍ਰੋਜੈਕਟ ਅੰਤਮ</string>
+    <item name="deleteAllButton" type="id"/>
+</resources>
