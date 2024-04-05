@@ -4,42 +4,36 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.widget.Toolbar;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int MENU_ITEM_MEMBER1 = 1;
-    private static final int MENU_ITEM_MEMBER2 = 2;
-// Add more constants for other menu items if needed
-    private AppDatabase db;
     private RecyclerView favoritesRecyclerView;
-    private FavoritesAdapter adapter;
-    private List<Location> locations;
+    private RecyclerView recyclerView; // Class-level declaration to be initialized in onCreate
+    private FavoritesAdapter favoritesAdapter;
+    private List<Location> locations = new ArrayList<>();
+    private Handler handler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         EditText latitudeInput = findViewById(R.id.latitudeInput);
         EditText longitudeInput = findViewById(R.id.longitudeInput);
@@ -49,196 +43,127 @@ public class MainActivity extends AppCompatActivity {
         longitudeInput.setText(prefs.getString("lastLongitude", ""));
 
         favoritesRecyclerView = findViewById(R.id.favoritesRecyclerView);
-        adapter = new FavoritesAdapter(this, locations);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        favoritesRecyclerView.setAdapter(adapter);
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        favoritesAdapter = new FavoritesAdapter(this, locations);
+        favoritesRecyclerView.setAdapter(favoritesAdapter);
+        favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Fetch data for RecyclerView
-        List<String> dataList = getData();
-
-        // Create and set adapter
-        CustomAdapter adapter = new CustomAdapter(dataList);
-        recyclerView.setAdapter(adapter);
-
-        SunriseSunsetAPI.fetchSunriseSunset(getApplicationContext(), 43.7, -79.42, new SunriseSunsetAPI.SunriseSunsetListener() {
-            @Override
-            public void onSuccess(String sunrise, String sunset) {
-                // Update UI with sunrise and sunset times
-                TextView textViewSunrise = findViewById(R.id.textViewSunrise);
-                TextView textViewSunset = findViewById(R.id.textViewSunset);
-                textViewSunrise.setText("Sunrise: " + sunrise);
-                textViewSunset.setText("Sunset: " + sunset);
-            }
-
-            @Override
-            public void onError(String message) {
-                // Display error message
-                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-            }
-        });
+        recyclerView = findViewById(R.id.recyclerView); // Correctly initialize the class-level recyclerView
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        CustomAdapter customAdapter = new CustomAdapter(getData());
+        recyclerView.setAdapter(customAdapter);
 
         Button showToastButton = findViewById(R.id.showToastButton);
+        showToastButton.setOnClickListener(v -> Toast.makeText(MainActivity.this, "This is a Toast message", Toast.LENGTH_SHORT).show());
+
         Button showSnackbarButton = findViewById(R.id.showSnackbarButton);
+        showSnackbarButton.setOnClickListener(v -> Snackbar.make(findViewById(android.R.id.content), "This is a Snackbar message", Snackbar.LENGTH_SHORT).show());
+
         Button showAlertDialogButton = findViewById(R.id.showAlertDialogButton);
+        showAlertDialogButton.setOnClickListener(v -> showAlertDialog());
 
-        showToastButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showToast();
-            }
-        });
+        Button lookupButton = findViewById(R.id.lookupButton);
+        lookupButton.setOnClickListener(this::onLookupButtonClick);
 
-        showSnackbarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSnackbar();
-            }
-        });
-
-        showAlertDialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlertDialog();
-            }
-        });
-    }
-
-    private void showToast() {
-        Toast.makeText(MainActivity.this, "This is a Toast message", Toast.LENGTH_SHORT).show();
-    }
-
-    private void showSnackbar() {
-        Snackbar.make(findViewById(android.R.id.content), "This is a Snackbar message", Snackbar.LENGTH_SHORT).show();
+        fetchDataAndUpdateUI(); // Fetch data asynchronously and update UI
     }
 
     private void showAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Alert Dialog")
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Alert Dialog")
                 .setMessage("This is an AlertDialog message")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // Positive button clicked
-                    }
+                .setPositiveButton("OK", (dialogInterface, i) -> {
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // Negative button clicked
-                    }
+                .setNegativeButton("Cancel", (dialogInterface, i) -> {
                 })
                 .show();
     }
 
 
-
-
-
     private List<String> getData() {
-        List<String> dataList = new ArrayList<>();
-        // Add your logic here to fetch data
-        // For example, fetching data from a database or an API
-        // Replace this example with your actual data-fetching logic
-
-        // Sample data for demonstration purposes
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-
-        return dataList;
+        // Implement actual data fetching logic here
+        return Arrays.asList("Beach 1", "Beach 2", "Beach 3"); // Example data
     }
 
+    private void fetchDataAndUpdateUI() {
+        new Thread(() -> {
+            try {
+                Thread.sleep(2000); // Simulate delay
+                // Simulated data fetched
+                List<String> fetchedData = Arrays.asList("Beach A", "Beach B", "Beach C");
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
+                // Run on UI thread to update UI
+                handler.post(() -> updateRecyclerView(fetchedData));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case MENU_ITEM_MEMBER1:
-                startActivity(new Intent(this, SunriseSunsetActivity.class));
-                return true;
-            case MENU_ITEM_MEMBER2:
-                startActivity(new Intent(this, RecipeSearchActivity.class));
-                return true;
-            // Add more cases for other menu items...
-            default:
-                return super.onOptionsItemSelected(item);
+    private void updateRecyclerView(List<String> data) {
+        CustomAdapter adapter = (CustomAdapter) recyclerView.getAdapter();
+        if (adapter != null) {
+            adapter.updateData(data); // Ensure this method is properly implemented in your CustomAdapter class
         }
     }
-
-
-
 
 
     public void onLookupButtonClick(View view) {
         EditText latitudeInput = findViewById(R.id.latitudeInput);
         EditText longitudeInput = findViewById(R.id.longitudeInput);
+        String latitudeStr = latitudeInput.getText().toString();
+        String longitudeStr = longitudeInput.getText().toString();
 
-        String latitude = latitudeInput.getText().toString();
-        String longitude = longitudeInput.getText().toString();
+        try {
+            double latitude = Double.parseDouble(latitudeStr);
+            double longitude = Double.parseDouble(longitudeStr);
 
-        // Save the last search terms
-        SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("lastLatitude", latitude);
-        editor.putString("lastLongitude", longitude);
-        editor.apply();
+            SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("lastLatitude", latitudeStr);
+            editor.putString("lastLongitude", longitudeStr);
+            editor.apply();
 
-        // Proceed to fetch sunrise and sunset times
-        fetchSunriseSunsetTimes(latitude, longitude);
+            // Display loading or disable button if needed here
+            // ...
+
+            SunriseSunsetAPI.fetchSunriseSunset(this, latitude, longitude, new SunriseSunsetAPI.SunriseSunsetListener() {
+                @Override
+                public void onSuccess(String sunrise, String sunset) {
+                    runOnUiThread(() -> {
+                        TextView textViewSunrise = findViewById(R.id.textViewSunrise);
+                        TextView textViewSunset = findViewById(R.id.textViewSunset);
+                        textViewSunrise.setText(getString(R.string.sunrise) + " " + formatTime(sunrise));
+                        textViewSunset.setText(getString(R.string.sunset) + " " + formatTime(sunset));
+                    });
+                }
+
+                @Override
+                public void onError(String message) {
+                    runOnUiThread(() -> Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show());
+                }
+            });
+
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Please enter valid latitude and longitude values", Toast.LENGTH_LONG).show();
+        }
     }
 
+    private String formatTime(String isoTime) {
+        try {
+            // ISO 8601 format
+            SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.US);
+            isoFormat.setTimeZone(TimeZone.getTimeZone("UTC")); // The API response is in UTC
+            Date date = isoFormat.parse(isoTime);
 
+            // Convert to the local time zone and desired format
+            SimpleDateFormat localFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
+            localFormat.setTimeZone(TimeZone.getDefault()); // Set to local time zone
 
-    public void fetchSunriseSunsetTimes(String latitude, String longitude) {
-        // Initialize the request queue
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        // Format the URL with the provided latitude and longitude
-        String url = "https://api.sunrise-sunset.org/json?lat=" + latitude + "&lng=" + longitude + "&formatted=0";
-
-        // Create a string request
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                response -> {
-                    try {
-                        // Here, parse the JSON response to extract sunrise and sunset times
-                        JSONObject jsonResponse = new JSONObject(response);
-                        JSONObject results = jsonResponse.getJSONObject("results");
-                        String sunrise = results.getString("sunrise");
-                        String sunset = results.getString("sunset");
-
-                        // Use this information as needed in your app
-                        // For example, update the UI with these times
-                        updateUIWithSunTimes(sunrise, sunset);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        // Handle JSON parsing error
-                    }
-                },
-                error -> {
-                    // Handle error scenario
-                    error.printStackTrace();
-                });
-
-        // Add the request to the request queue
-        queue.add(stringRequest);
+            return localFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "Time Error";
+        }
     }
-
-    private void updateUIWithSunTimes(String sunrise, String sunset) {
-        // Update your UI elements with the sunrise and sunset times
-        // This might involve setting the text of TextViews as an example
-    }
-
-    // Add methods for inserting, deleting locations, making network requests, etc.
 
 }

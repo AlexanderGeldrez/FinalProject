@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
-    private final List<String> dataList; // Change String to your data model type
+    private List<String> dataList; // Change String to your data model type
 
     public CustomAdapter(List<String> dataList) {
         this.dataList = dataList;
@@ -24,11 +24,20 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         return new ViewHolder(view);
     }
 
+    public void updateData(List<String> newData) {
+        this.dataList = newData;
+        notifyDataSetChanged(); // Notify the adapter to re-render the list
+    }
+
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String dataItem = dataList.get(position);
-        holder.bind(dataItem);
+        String beachName = dataList.get(position); // Assuming dataList contains beach names
+        String beachLocation = ""; // You need to retrieve beach location data based on your application
+        holder.beachNameTextView.setText(beachName);
+        holder.bind(beachName, beachLocation);
     }
+
 
     @Override
     public int getItemCount() {
@@ -36,15 +45,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
+        TextView beachNameTextView;
+        TextView beachLocationTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.textView); // Replace textView with your item layout's views
+            beachNameTextView = itemView.findViewById(R.id.textViewBeachName);
+            beachLocationTextView = itemView.findViewById(R.id.textViewBeachLocation);
         }
 
-        public void bind(String dataItem) {
-            textView.setText(dataItem);
+        public void bind(String beachName, String beachLocation) {
+            beachNameTextView.setText(beachName);
+            beachLocationTextView.setText(beachLocation);
         }
     }
 }

@@ -1,5 +1,6 @@
 package algonquin.cst2335.finalproject;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -23,44 +24,31 @@ public class SunriseSunsetAPI {
         void onError(String message);
     }
 
+
+
     // Method to fetch sunrise and sunset times from the API
     public static void fetchSunriseSunset(Context context, double latitude, double longitude, SunriseSunsetListener listener) {
-        // Initialize the request queue
         RequestQueue queue = Volley.newRequestQueue(context);
-
-        // Format the URL with the provided latitude and longitude
         String url = API_URL + "lat=" + latitude + "&lng=" + longitude + "&formatted=0";
 
-        // Create a string request
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            // Parse the JSON response to extract sunrise and sunset times
-                            JSONObject jsonResponse = new JSONObject(response);
-                            JSONObject results = jsonResponse.getJSONObject("results");
-                            String sunrise = results.getString("sunrise");
-                            String sunset = results.getString("sunset");
 
-                            // Callback with sunrise and sunset times
-                            listener.onSuccess(sunrise, sunset);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            // Handle JSON parsing error
-                            listener.onError("Error parsing JSON response");
-                        }
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                response -> {
+
+                    try {
+                        Log.d("API Response", response);
+                        JSONObject jsonResponse = new JSONObject(response);
+                        JSONObject results = jsonResponse.getJSONObject("results");
+                        String sunrise = results.getString("sunrise");
+                        String sunset = results.getString("sunset");
+                        listener.onSuccess(sunrise, sunset);
+                    } catch (JSONException e) {
+                        listener.onError("Error parsing JSON response");
+
                     }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle error scenario
-                        listener.onError("Error fetching data: " + error.getMessage());
-                    }
-                });
-
-        // Add the request to the request queue
+                error -> listener.onError("Error fetching data: " + error.getMessage()));
         queue.add(stringRequest);
     }
+
 }

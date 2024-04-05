@@ -17,6 +17,8 @@
         android:id="@+id/latitudeInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="16dp"
         android:hint="@string/latitude_hint" />
 
     <EditText
@@ -24,52 +26,74 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/latitudeInput"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/longitude_hint" />
 
     <Button
         android:id="@+id/lookupButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/longitudeInput"
-        android:layout_marginTop="9dp"
-        android:text="@string/lookup" />
+        android:layout_marginTop="16dp"
+        android:text="@string/lookup"
+        android:onClick="onLookupButtonClick" />
+
+    <TextView
+        android:id="@+id/textViewSunrise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lookupButton"
+        android:layout_marginTop="16dp"
+        android:text="@string/sunrise"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textViewSunset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewSunrise"
+        android:layout_marginTop="8dp"
+        android:text="@string/sunset"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
 
     <Button
         android:id="@+id/showToastButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/show_toast"
         android:layout_below="@id/favoritesRecyclerView"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="48dp"
+        android:text="@string/show_toast" />
 
     <Button
         android:id="@+id/showSnackbarButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/show_snackbar"
-        android:layout_below="@id/showToastButton"
-        android:layout_marginTop="16dp"/>
+        android:layout_below="@id/lookupButton"
+        android:layout_marginTop="74dp"
+        android:text="@string/show_snackbar" />
 
     <Button
         android:id="@+id/showAlertDialogButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/show_alert_dialog"
         android:layout_below="@id/showSnackbarButton"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:text="@string/show_alert_dialog" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favoritesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lookupButton"
-        android:layout_marginTop="16dp"/>
+        android:layout_below="@id/showAlertDialogButton"
+        android:layout_marginTop="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/favoritesRecyclerView"
-        android:layout_marginTop="17dp" />
+        android:layout_marginTop="16dp" />
 </RelativeLayout>

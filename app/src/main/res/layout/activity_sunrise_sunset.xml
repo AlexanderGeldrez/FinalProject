@@ -21,7 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lookup"
-        android:layout_below="@id/longitudeInput" />
+        android:layout_below="@id/longitudeInput"
+        android:onClick="onLookupButtonClick" />
 
     <TextView
         android:id="@+id/textViewSunrise"
@@ -37,6 +38,5 @@
         android:layout_below="@id/textViewSunrise"
         android:text="Sunset Time" />
 
-    <!-- Other UI components -->
 
 </RelativeLayout>
