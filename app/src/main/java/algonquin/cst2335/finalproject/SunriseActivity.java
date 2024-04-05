@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class MainActivity extends AppCompatActivity {
+public class SunriseActivity extends AppCompatActivity {
 
     private Handler handler = new Handler();
     private CustomAdapter customAdapter;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupButtons() {
         Button showToastButton = findViewById(R.id.showToastButton);
-        showToastButton.setOnClickListener(v -> Toast.makeText(MainActivity.this, "This is a Toast message", Toast.LENGTH_SHORT).show());
+        showToastButton.setOnClickListener(v -> Toast.makeText(SunriseActivity.this, "This is a Toast message", Toast.LENGTH_SHORT).show());
 
         Button showSnackbarButton = findViewById(R.id.showSnackbarButton);
         showSnackbarButton.setOnClickListener(v -> Snackbar.make(findViewById(android.R.id.content), "This is a Snackbar message", Snackbar.LENGTH_SHORT).show());
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showAlertDialog() {
-        new AlertDialog.Builder(MainActivity.this)
+        new AlertDialog.Builder(SunriseActivity.this)
                 .setTitle("Alert Dialog")
                 .setMessage("This is an AlertDialog message")
                 .setPositiveButton("OK", null)
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(String message) {
-                    runOnUiThread(() -> Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show());
+                    runOnUiThread(() -> Toast.makeText(SunriseActivity.this, message, Toast.LENGTH_LONG).show());
                 }
             });
         } catch (NumberFormatException e) {
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
             new Thread(() -> {
                 db.locationDao().insert(location);
-                runOnUiThread(() -> Toast.makeText(MainActivity.this, "Saved to favorites!", Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> Toast.makeText(SunriseActivity.this, "Saved to favorites!", Toast.LENGTH_LONG).show());
             }).start();
         } else {
             Toast.makeText(this, "Please enter valid latitude and longitude values", Toast.LENGTH_LONG).show();
