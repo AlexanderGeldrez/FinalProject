@@ -7,45 +7,48 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class DictionaryAdapter extends RecyclerView.Adapter<DictionaryAdapter.ViewHolder> {
 
-    private List<DictionaryItem> dictionaryItems;
+    private final ArrayList<DictionaryModel> definitions;
 
-    public DictionaryAdapter(List<DictionaryItem> dictionaryItems) {
-        this.dictionaryItems = dictionaryItems;
+    public DictionaryAdapter(ArrayList<DictionaryModel> definitions) {
+        this.definitions = definitions;
+    }
+
+    public void updateData(ArrayList<DictionaryModel> newData) {
+        definitions.clear();
+        definitions.addAll(newData);
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_dictionary, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dictionary, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DictionaryItem dictionaryItem = dictionaryItems.get(position);
-        holder.tvPartOfSpeech.setText(dictionaryItem.getPartOfSpeech());
-        holder.tvDefinition.setText(dictionaryItem.getDefinition());
+        DictionaryModel model = definitions.get(position);
+        holder.wordTextView.setText(model.getWord());
+        holder.definitionTextView.setText(model.getDefinition());
     }
 
     @Override
     public int getItemCount() {
-        return dictionaryItems.size();
+        return definitions.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView wordTextView, definitionTextView;
 
-        TextView tvPartOfSpeech;
-        TextView tvDefinition;
-
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvPartOfSpeech = itemView.findViewById(R.id.text_part_of_speech);
-            tvDefinition = itemView.findViewById(R.id.text_definition);
+            wordTextView = itemView.findViewById(R.id.wordTextView);
+            definitionTextView = itemView.findViewById(R.id.definitionTextView);
         }
     }
 }
-

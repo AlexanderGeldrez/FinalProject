@@ -1,28 +1,27 @@
 package algonquin.cst2335.finalproject;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String PREF_SEARCH_TERM = "search_term";
-    private Toolbar toolbar;
+    private EditText searchEditText;
     private RecyclerView recyclerView;
-    private SearchTermAdapter searchTermAdapter;
-    private List<String> savedSearchTerms = new ArrayList<>();
+    private DictionaryAdapter adapter;
+    private DatabaseHelper dbHelper;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -30,81 +29,69 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize toolbar
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recycler_view);
+        searchEditText = findViewById(R.id.searchEditText);
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        savedSearchTerms = new ArrayList<>();
-        searchTermAdapter = new SearchTermAdapter(savedSearchTerms);
-        recyclerView.setAdapter(searchTermAdapter);
-        searchTermAdapter.notifyDataSetChanged();
-        // Initialize SharedPreferences
-        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        adapter = new DictionaryAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
 
-        // Load saved search terms from SharedPreferences
-        loadSearchTerms();
+        dbHelper = new DatabaseHelper(this);
+        sharedPreferences = getSharedPreferences("DictionaryPrefs", MODE_PRIVATE);
+
+        String lastSearchTerm = sharedPreferences.getString("lastSearchTerm", "");
+        searchEditText.setText(lastSearchTerm);
     }
 
-    // Load saved search terms from SharedPreferences
-    private void loadSearchTerms() {
-        String searchTerm = sharedPreferences.getString(PREF_SEARCH_TERM, "");
+    public void searchDefinition(View view) {
+        String searchTerm = searchEditText.getText().toString().trim();
         if (!searchTerm.isEmpty()) {
-            savedSearchTerms.add(searchTerm);
-            searchTermAdapter.notifyDataSetChanged();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("lastSearchTerm", searchTerm);
+            editor.apply();
+
+            ArrayList<DictionaryModel> definitions = dbHelper.getDefinitions(searchTerm);
+            if (definitions.isEmpty()) {
+                Toast.makeText(this, "No definitions found for " + searchTerm, Toast.LENGTH_SHORT).show();
+            } else {
+                // Display definitions using RecyclerView
+                adapter.updateData(definitions);
+            }
+        } else {
+            Toast.makeText(this, "Please enter a word to search", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Save search term to SharedPreferences
-    private void saveSearchTerm(String term) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(PREF_SEARCH_TERM, term);
-        editor.apply();
+
+    public void viewSavedTerms(View view) {
+        // Retrieve saved terms from SharedPreferences
+        Set<String> savedTermsSet = sharedPreferences.getStringSet("savedTerms", new HashSet<>());
+        ArrayList<String> savedTerms = new ArrayList<>(savedTermsSet);
+
+        if (savedTerms.isEmpty()) {
+            Toast.makeText(this, "No saved terms found", Toast.LENGTH_SHORT).show();
+        } else {
+            // Show saved terms to user
+            for (String term : savedTerms) {
+                System.out.println("Saved Term: " + term);
+            }
+        }
     }
 
-    // Handle toolbar menu options
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    // Handle toolbar menu item clicks
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//        switch (id) {
-//            case R.id.menu_help:
-//                showHelpDialog();
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
-
-    // Show help dialog
-    private void showHelpDialog() {
+    public void deleteDefinition(View view, String term) {
+        // Create AlertDialog for confirmation
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Help");
-        builder.setMessage("Instructions on how to use the application...");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setMessage("Are you sure you want to delete the definition for " + term + "?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Do something when the "OK" button is clicked
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Delete the definition
+                dbHelper.deleteDefinition(term);
+                Toast.makeText(MainActivity.this, "Definition for " + term + " deleted", Toast.LENGTH_SHORT).show();
             }
         });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-
-    // Handle click on a saved search term
-    private void onSearchTermClicked(String term) {
-        // Start new activity with the selected search term
-        Intent intent = new Intent(this, DictionaryActivity.class);
-        intent.putExtra("search_term", term);
-        startActivity(intent);
+        builder.setNegativeButton("No", null);
+        builder.show();
     }
 }
+

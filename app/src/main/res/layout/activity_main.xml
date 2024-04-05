@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Toolbar -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <EditText
+        android:id="@+id/searchEditText"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:title="@string/app_name"
-        app:titleTextColor="@android:color/white" />
+        android:layout_height="wrap_content"
+        android:hint="Enter word to search"
+        android:layout_margin="16dp"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
 
-    <!-- RecyclerView -->
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:layout_below="@id/searchEditText"
+        android:layout_centerHorizontal="true"
+        android:onClick="searchDefinition"/>
+
+    <Button
+        android:id="@+id/viewSavedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Saved Terms"
+        android:layout_below="@id/searchButton"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:onClick="viewSavedTerms"/>
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:padding="8dp" />
-
+        android:layout_height="wrap_content"
+        android:layout_below="@id/viewSavedButton"
+        android:layout_marginTop="16dp"/>
 </RelativeLayout>
