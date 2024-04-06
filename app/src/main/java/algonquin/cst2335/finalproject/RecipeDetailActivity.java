@@ -21,7 +21,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private Button saveRecipeButton, deleteRecipeButton;
     private RecipeViewModel viewModel;
     private RecipeEntity currentRecipe = null;
-    private final String apiKey = "740132ab259d463e8250e8ac1f38bc09";
+    private final String apiKey = "fe473bd0e0f945a7ae5d152e17b2e5dd";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +34,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         recipeSummary = findViewById(R.id.recipeSummary);
         recipeSourceUrl = findViewById(R.id.recipeSourceUrl);
         saveRecipeButton = findViewById(R.id.saveRecipeButton);
-        deleteRecipeButton = findViewById(R.id.deleteRecipeButton);
 
         int recipeId = getIntent().getIntExtra("recipeId", -1);
         if (recipeId != -1) {

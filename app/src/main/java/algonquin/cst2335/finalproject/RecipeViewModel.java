@@ -1,11 +1,9 @@
 package algonquin.cst2335.finalproject;
 
 import android.app.Application;
-
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.room.Room;
-
 import java.util.List;
 
 public class RecipeViewModel extends AndroidViewModel {
@@ -25,8 +23,7 @@ public class RecipeViewModel extends AndroidViewModel {
     }
 
     public LiveData<RecipeEntity> getRecipeById(int id) {
-        // Implement logic to fetch a single recipe by ID from the database, may need to adjust DAO
-        return null;
+        return recipeDao.getRecipeById(id);
     }
 
     public void insertRecipe(RecipeEntity recipe) {
@@ -36,5 +33,4 @@ public class RecipeViewModel extends AndroidViewModel {
     public void deleteRecipe(int id) {
         AppDatabase.databaseWriteExecutor.execute(() -> recipeDao.deleteRecipe(id));
     }
-
 }

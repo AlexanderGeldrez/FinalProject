@@ -29,7 +29,7 @@ public class RecipeMain extends AppCompatActivity {
     private RecyclerView recipesRecyclerView;
     private RecipesAdapter recipesAdapter;
     private RecipeViewModel viewModel;
-    private final String apiKey = "740132ab259d463e8250e8ac1f38bc09";
+    private final String apiKey = "fe473bd0e0f945a7ae5d152e17b2e5dd";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

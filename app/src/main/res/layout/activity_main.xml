@@ -47,7 +47,6 @@
         android:id="@+id/viewSavedRecipesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
         android:layout_marginTop="8dp"
         android:text="View Saved Recipes"
         tools:ignore="InvalidId" />
