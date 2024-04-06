@@ -7,29 +7,35 @@
 
     <ImageView
         android:id="@+id/recipeImage"
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:contentDescription="@string/recipe"
-    android:scaleType="centerCrop" />
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:contentDescription="@string/recipe"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/recipeSummary"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
 
     <TextView
         android:id="@+id/recipeSourceUrl"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:textStyle="italic" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textStyle="italic" />
 
     <Button
         android:id="@+id/saveRecipeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/save_recipe"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:text="@string/save_recipe"/>
 
+    <Button
+        android:id="@+id/deleteRecipeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/delete_recipe"/>
 </LinearLayout>

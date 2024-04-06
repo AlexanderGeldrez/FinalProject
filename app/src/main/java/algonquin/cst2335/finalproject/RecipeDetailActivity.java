@@ -34,6 +34,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         recipeSummary = findViewById(R.id.recipeSummary);
         recipeSourceUrl = findViewById(R.id.recipeSourceUrl);
         saveRecipeButton = findViewById(R.id.saveRecipeButton);
+        deleteRecipeButton = findViewById(R.id.deleteRecipeButton); // Corrected
 
         int recipeId = getIntent().getIntExtra("recipeId", -1);
         if (recipeId != -1) {
@@ -43,7 +44,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         saveRecipeButton.setOnClickListener(v -> saveRecipe());
         deleteRecipeButton.setOnClickListener(v -> deleteRecipe());
     }
-
     private void fetchRecipeDetails(int recipeId) {
         RetrofitClientInstance.getRetrofitInstance().create(SpoonacularAPIService.class)
                 .getRecipeDetails(recipeId, apiKey).enqueue(new Callback<RecipeDetailResponse>() {

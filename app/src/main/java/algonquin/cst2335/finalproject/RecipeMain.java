@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,12 +60,31 @@ public class RecipeMain extends AppCompatActivity {
             new AlertDialog.Builder(RecipeMain.this)
                     .setTitle("Load Saved Recipes")
                     .setMessage("Are you sure you want to view saved recipes?")
-                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                        loadSavedRecipes();
-                    })
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> loadSavedRecipes())
                     .setNegativeButton(android.R.string.no, null)
-                    .setIcon(R.drawable.navigation) // Ensure this drawable exists
+                    .setIcon(R.drawable.navigation) // Make sure this drawable exists
                     .show();
+        });
+
+        // Modify this part to correctly implement the UNDO feature
+        findViewById(R.id.deleteAllRecipesButton).setOnClickListener(view -> {
+            // Ensure we fetch and store the current list of recipes first
+            viewModel.getAllRecipes().observe(this, recipeEntities -> {
+                List<RecipeEntity> deletedRecipes = new ArrayList<>(recipeEntities);
+
+                viewModel.deleteAllRecipes(); // This deletes all recipes from your database.
+
+                Snackbar.make(findViewById(android.R.id.content), "All recipes deleted", Snackbar.LENGTH_LONG)
+                        .setAction("UNDO", v -> {
+                            // Re-insert the deleted recipes
+                            for (RecipeEntity recipe : deletedRecipes) {
+                                viewModel.insertRecipe(recipe);
+                            }
+                        }).show();
+
+                // Detach the observer to prevent this block from running again unnecessarily
+                viewModel.getAllRecipes().removeObservers(this);
+            });
         });
     }
 
@@ -119,4 +139,5 @@ public class RecipeMain extends AppCompatActivity {
         intent.putExtra("recipeId", recipeId);
         startActivity(intent);
     }
+
 }

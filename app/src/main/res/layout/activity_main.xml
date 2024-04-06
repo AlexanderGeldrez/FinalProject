@@ -51,5 +51,13 @@
         android:text="View Saved Recipes"
         tools:ignore="InvalidId" />
 
+    <Button
+        android:id="@+id/deleteAllRecipesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete All Recipes"
+        android:layout_marginTop="8dp"/>
+
+
 
 </LinearLayout>

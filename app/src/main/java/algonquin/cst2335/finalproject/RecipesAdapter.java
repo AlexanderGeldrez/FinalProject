@@ -93,4 +93,10 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
+
+    public void clearRecipes() {
+        recipesList.clear();
+        notifyDataSetChanged();
+    }
+
 }

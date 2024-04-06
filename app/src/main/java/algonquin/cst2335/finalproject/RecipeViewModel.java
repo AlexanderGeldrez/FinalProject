@@ -33,4 +33,12 @@ public class RecipeViewModel extends AndroidViewModel {
     public void deleteRecipe(int id) {
         AppDatabase.databaseWriteExecutor.execute(() -> recipeDao.deleteRecipe(id));
     }
+
+    public void deleteAllRecipes() {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            recipeDao.deleteAllRecipes();
+        });
+    }
+
+
 }
