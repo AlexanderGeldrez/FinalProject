@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Menu item for Sunrise & Sunset Activity -->
+    <item
+        android:id="@+id/action_sunrise_sunset"
+        android:icon="@drawable/sunrisesunset"
+        android:title="@string/sunrise_sunset"
+        app:showAsAction="never" />
+
+<!--    &lt;!&ndash; Menu item for Member 1 Activity &ndash;&gt;-->
+<!--    <item-->
+<!--        android:id="@+id/action_member1"-->
+<!--        android:icon="@drawable/ic_member1"-->
+<!--        android:title="@string/member1_activity"-->
+<!--        app:showAsAction="ifRoom" />-->
+
+<!--    &lt;!&ndash; Menu item for Member 2 Activity &ndash;&gt;-->
+<!--    <item-->
+<!--        android:id="@+id/action_member2"-->
+<!--        android:icon="@drawable/ic_member2"-->
+<!--        android:title="@string/member2_activity"-->
+<!--        app:showAsAction="ifRoom" />-->
+
+    <!-- Add menu items for other members' activities as needed -->
+
+</menu>
