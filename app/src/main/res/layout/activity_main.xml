@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -29,6 +30,8 @@
         android:hint="Enter a recipe name"
         tools:ignore="InvalidId" />
 
+
+
     <Button
         android:id="@+id/searchButton"
         android:layout_width="wrap_content"
@@ -36,6 +39,15 @@
         android:text="Search"
         android:layout_gravity="center_horizontal"
         tools:ignore="InvalidId" />
+
+    <Button
+        android:id="@+id/helpButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Help"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"/>
+
 
 
     <androidx.recyclerview.widget.RecyclerView

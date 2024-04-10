@@ -1,45 +1,77 @@
 package algonquin.cst2335.finalproject;
 
+/**
+ * Represents a recipe with its ID, title, and image.
+ */
 public class Recipe {
     private int id;
     private String title;
     private String image;
 
-    // Constructor
+    /**
+     * Constructs a new Recipe with the specified ID, title, and image.
+     *
+     * @param id    The ID of the recipe.
+     * @param title The title of the recipe.
+     * @param image The URL of the image associated with the recipe.
+     */
     public Recipe(int id, String title, String image) {
         this.id = id;
         this.title = title;
         this.image = image;
     }
 
-    // Getter for the ID
+    /**
+     * Retrieves the ID of the recipe.
+     *
+     * @return The ID of the recipe.
+     */
     public int getId() {
         return id;
     }
 
-    // Setter for the ID, if needed
+    /**
+     * Sets the ID of the recipe.
+     *
+     * @param id The new ID to be set.
+     */
     public void setId(int id) {
         this.id = id;
     }
 
-    // Getter for the title
+    /**
+     * Retrieves the title of the recipe.
+     *
+     * @return The title of the recipe.
+     */
     public String getTitle() {
         return title;
     }
 
-    // Setter for the title, if needed
+    /**
+     * Sets the title of the recipe.
+     *
+     * @param title The new title to be set.
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
-    // Getter for the image URL
+    /**
+     * Retrieves the URL of the image associated with the recipe.
+     *
+     * @return The URL of the image.
+     */
     public String getImage() {
         return image;
     }
 
-    // Setter for the image URL, if needed
+    /**
+     * Sets the URL of the image associated with the recipe.
+     *
+     * @param image The new image URL to be set.
+     */
     public void setImage(String image) {
         this.image = image;
     }
-
 }

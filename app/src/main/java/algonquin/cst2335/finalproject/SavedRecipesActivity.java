@@ -48,10 +48,22 @@ public class SavedRecipesActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Converts a list of RecipeEntity objects to a list of Recipe objects.
+     *
+     * @param entities The list of RecipeEntity objects to convert.
+     * @return The converted list of Recipe objects.
+     */
     private List<Recipe> convertEntitiesToRecipes(List<RecipeEntity> entities) {
         // Implement conversion logic
         return new ArrayList<>(); // Return the converted list
     }
+
+    /**
+     * Opens the recipe details activity for the specified recipe ID.
+     *
+     * @param recipeId The ID of the recipe to display details for.
+     */
 
     private void openRecipeDetails(int recipeId) {
         Intent intent = new Intent(this, RecipeDetailActivity.class);

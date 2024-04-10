@@ -7,6 +7,11 @@ public class RetrofitClientInstance {
     private static Retrofit retrofit;
     private static final String BASE_URL = "https://api.spoonacular.com/";
 
+    /**
+     * Retrieves the Retrofit instance for making API requests.
+     *
+     * @return The Retrofit instance.
+     */
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()

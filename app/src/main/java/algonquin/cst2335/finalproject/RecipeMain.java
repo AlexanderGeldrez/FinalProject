@@ -32,6 +32,10 @@ public class RecipeMain extends AppCompatActivity {
     private RecipeViewModel viewModel;
     private final String apiKey = "6c22d1a8b6ab41e79773c28f1c6ed9eb";
 
+    /**
+     * Initializes the activity, setting up the UI components and event listeners.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +45,9 @@ public class RecipeMain extends AppCompatActivity {
         searchButton = findViewById(R.id.searchButton);
         recipesRecyclerView = findViewById(R.id.recipesRecyclerView);
         viewSavedRecipesButton = findViewById(R.id.viewSavedRecipesButton);
+
+        Button helpButton = findViewById(R.id.helpButton);
+        helpButton.setOnClickListener(view -> showHelpDialog());
 
         recipesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         recipesAdapter = new RecipesAdapter(this, new ArrayList<>());
@@ -110,6 +117,18 @@ public class RecipeMain extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Shows an AlertDialog with the description of the recipe application.
+     */
+    private void showHelpDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("About Recipe App")
+                .setMessage("This recipe application allows you to search for various recipes, view details of specific recipes, save your favorite recipes, and manage them easily. Use the 'Search' to find recipes, 'View Saved Recipes' to see your saved list, and the 'Delete All Recipes' feature to manage your saved recipes.")
+                .setPositiveButton(android.R.string.ok, null)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
+    }
+
     private void loadSavedRecipes() {
         viewModel.getAllRecipes().observe(this, recipeEntities -> {
             // Assuming you have a method in your adapter to update the dataset
@@ -134,6 +153,11 @@ public class RecipeMain extends AppCompatActivity {
         searchEditText.setText(lastSearch);
     }
 
+    /**
+     * Opens the recipe details activity for the specified recipe ID.
+     *
+     * @param recipeId The ID of the recipe to display details for.
+     */
     private void openRecipeDetails(int recipeId) {
         Intent intent = new Intent(this, RecipeDetailActivity.class);
         intent.putExtra("recipeId", recipeId);

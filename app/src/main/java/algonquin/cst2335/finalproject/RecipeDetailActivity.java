@@ -44,6 +44,12 @@ public class RecipeDetailActivity extends AppCompatActivity {
         saveRecipeButton.setOnClickListener(v -> saveRecipe());
         deleteRecipeButton.setOnClickListener(v -> deleteRecipe());
     }
+
+    /**
+     * Fetches details of a recipe from the API.
+     *
+     * @param recipeId The ID of the recipe to fetch.
+     */
     private void fetchRecipeDetails(int recipeId) {
         RetrofitClientInstance.getRetrofitInstance().create(SpoonacularAPIService.class)
                 .getRecipeDetails(recipeId, apiKey).enqueue(new Callback<RecipeDetailResponse>() {
@@ -83,12 +89,22 @@ public class RecipeDetailActivity extends AppCompatActivity {
             updateButtonsVisibility(true); // Show save, hide delete button
         }
     }
-
+    /**
+     * Updates the UI with details of the current recipe.
+     *
+     * @param recipe The recipe entity containing details to display.
+     */
     private void updateUIWithRecipeDetails(RecipeEntity recipe) {
         Picasso.get().load(recipe.image).into(recipeImage);
         recipeSummary.setText(recipe.summary);
         recipeSourceUrl.setText(recipe.sourceUrl);
     }
+
+    /**
+     * Updates the visibility of save and delete buttons.
+     *
+     * @param showSave True to show the save button, false to hide it.
+     */
 
     private void updateButtonsVisibility(boolean showSave) {
         saveRecipeButton.setVisibility(showSave ? View.VISIBLE : View.GONE);

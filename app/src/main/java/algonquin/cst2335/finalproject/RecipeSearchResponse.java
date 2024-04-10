@@ -5,12 +5,20 @@ import java.util.List;
 public class RecipeSearchResponse {
     private List<Recipe> results;
 
-    // Getter for the list of Recipe objects
+    /**
+     * Retrieves the list of Recipe objects from the response.
+     *
+     * @return The list of Recipe objects.
+     */
     public List<Recipe> getResults() {
         return results;
     }
 
-    // Setter for the list of Recipe objects
+    /**
+     * Sets the list of Recipe objects in the response.
+     *
+     * @param results The list of Recipe objects to set.
+     */
     public void setResults(List<Recipe> results) {
         this.results = results;
     }

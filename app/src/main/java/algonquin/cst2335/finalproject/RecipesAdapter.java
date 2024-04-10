@@ -17,7 +17,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    // Constructor
+    /**
+     * Constructor for the RecipesAdapter.
+     *
+     * @param context     The context in which the adapter will be used.
+     * @param recipesList The list of Recipe objects to populate the adapter with.
+     */
     public RecipesAdapter(Context context, List<Recipe> recipesList) {
         this.mInflater = LayoutInflater.from(context);
         this.recipesList = recipesList;
@@ -30,13 +35,21 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         return new ViewHolder(view);
     }
 
-    // Update recipes with a new list of Recipe objects
+    /**
+     * Updates the adapter with a new list of Recipe objects.
+     *
+     * @param recipes The list of Recipe objects to update the adapter with.
+     */
     public void updateRecipes(List<Recipe> recipes) {
         this.recipesList = recipes;
         notifyDataSetChanged();
     }
 
-    // New method to update the adapter with RecipeEntity objects
+    /**
+     * Updates the adapter with a new list of RecipeEntity objects.
+     *
+     * @param entities The list of RecipeEntity objects to update the adapter with.
+     */
     public void updateRecipesFromEntities(List<RecipeEntity> entities) {
         List<Recipe> recipes = new ArrayList<>();
         for (RecipeEntity entity : entities) {
