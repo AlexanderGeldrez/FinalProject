@@ -1,31 +1,18 @@
 package algonquin.cst2335.finalproject;
 import android.content.Intent;
 import android.os.Bundle;
-
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import algonquin.cst2335.finalproject.Mandeep.SunriseActivity;
-import algonquin.cst2335.finalproject.R;
 
 public class MainActivity extends AppCompatActivity {
-
-    // Initialize variables for each team member's project
-    private SunriseActivity sunriseActivity;
-//    private RecipeSearchActivity recipeSearchActivity;
-//    private DictionaryActivity dictionaryActivity;
-//    private DeezerSongSearchActivity deezerSongSearchActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_sunrise);
-
-        // Initialize each team member's activity
-        sunriseActivity = new SunriseActivity();
-//        recipeSearchActivity = new RecipeSearchActivity();
-//        dictionaryActivity = new DictionaryActivity();
-//        deezerSongSearchActivity = new DeezerSongSearchActivity();
+        setContentView(R.layout.activity_main);
 
         // Add graphical icons for each activity to the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -49,9 +36,13 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
 
+    // Correctly moved outside of the onCreate method
+    public void startSunriseActivity(View view) {
+        Intent intent = new Intent(MainActivity.this, SunriseActivity.class);
+        startActivity(intent);
     }
 
     // Other methods for handling RecyclerViews, database operations, etc.
-
 }

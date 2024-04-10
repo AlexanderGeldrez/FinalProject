@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <!-- Button for Sunrise Activity -->
+        <ImageButton
+            android:id="@+id/btn_sunrise"
+            android:layout_width="60dp"
+            android:layout_height="51dp"
+            android:contentDescription="@string/sunrise"
+            android:onClick="startSunriseActivity"
+            android:src="@drawable/ic_launcher_foreground" />
+
+        <!-- Buttons for other member activities -->
+        <!-- Uncomment and update the following sections as per your requirement -->
+        <!-- Remember to replace drawable and string resources with actual values -->
+
+        <!-- Button for Recipe Search Activity -->
+        <!-- <ImageButton
+            android:id="@+id/btn_recipe_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/recipe_search"
+            android:src="@drawable/ic_recipe_search"
+            android:onClick="startRecipeSearchActivity" /> -->
+
+        <!-- Button for Dictionary Activity -->
+        <!-- <ImageButton
+            android:id="@+id/btn_dictionary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/dictionary"
+            android:src="@drawable/ic_dictionary"
+            android:onClick="startDictionaryActivity" /> -->
+
+        <!-- Button for Deezer Song Search Activity -->
+        <!-- <ImageButton
+            android:id="@+id/btn_deezer_song_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/deezer_song_search"
+            android:src="@drawable/ic_deezer_song_search"
+            android:onClick="startDeezerSongSearchActivity" /> -->
+
+        <!-- Add other ImageButtons for additional activities as needed -->
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
