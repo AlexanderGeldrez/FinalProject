@@ -4,8 +4,8 @@
     <!-- Menu item for Sunrise & Sunset Activity -->
     <item
         android:id="@+id/action_sunrise_sunset"
-        android:icon="@drawable/sunrisesunset"
-        android:title="@string/sunrise_sunset"
+        android:icon="@drawable/sunsiresunset"
+        android:title="@string/sunrise"
         app:showAsAction="never" />
 
 <!--    &lt;!&ndash; Menu item for Member 1 Activity &ndash;&gt;-->
