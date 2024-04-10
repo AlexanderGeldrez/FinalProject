@@ -1,22 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Dictionary App</string>
-    <string name="dictionary_title">" Recherche dans le dictionnaire"</string>
-    <string name="hint_enter_word">" Entrez un mot..."</string>
-    <string name="btn_search">" recherche"</string>
-    <string name="btn_add_to_favorites">" Ajouter aux Favoris"</string>
-    <string name="btn_view_favorites">Afficher les favoris</string>
-    <string name="detail_title">" Détail de l'élément du dictionnaire"</string>
-    <string name="btn_delete_from_favorites">" Supprimer des favoris"</string>
-    <string name="menu_help">" aide"</string>
-    <string name="menu_clear_history">" Effacer l'historique"</string>
-    <string name="dialog_confirmation_title">" confirmation"</string>
-    <string name="dialog_confirmation_message">Êtes-vous sûr de bien vouloir supprimer cet élément?</string>
-    <string name="dialog_positive_button">Oui</string>
-    <string name="dialog_negative_button">no</string>
-    <string name="toast_added_to_favorites">Ajouté aux favoris</string>
-    <string name="toast_removed_from_favorites">Supprimé des favoris</string>
-    <string name="snackbar_deleted_from_favorites">" Élément supprimé des Favoris"</string>
-    <string name="alert_dialog_help_title">aide</string>
-    <string name="alert_dialog_help_message">Instructions pour utiliser l\'application...</string>
+    <string name="app_name"> Dictionnaire</string>
+    <string name="action_launch_dictionary">Lancer le Dictionnaire</string>
+    <string name="enter_word_hint">Entrez un mot...</string>
+    <string name="lookup">Chercher</string>
+    <string name="view_favorites">Voir les Favoris</string>
+    <string name="save_to_favorites">Sauvegarder dans les Favoris</string>
+    <string name="definition">Définition</string>
+    <string name="delete_all_favorites">Supprimer tous les Favoris</string>
+    <string name="confirm_delete_all_favorites">Êtes-vous sûr de vouloir supprimer toutes les définitions favorites ?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="definition_deleted">Définition supprimée</string>
+    <string name="undo">ANNULER</string>
+    <string name="all_definitions_deleted">Toutes les définitions de mots ont été supprimées</string>
+    <string name="error_parsing_json">Erreur lors de l'analyse de la réponse JSON</string>
+    <string name="error_fetching_data">Erreur lors de la récupération des données</string>
+    <string name="please_enter_a_word">Veuillez entrer un mot</string>
 </resources>

@@ -1,36 +1,19 @@
 <resources>
-    <!-- Main Activity -->
-    <string name="app_name">Dictionary App</string>
-
-    <!-- Dictionary Activity -->
-    <string name="dictionary_title">Dictionary Lookup</string>
-    <string name="btn_search">Search</string>
-    <string name="btn_add_to_favorites">Add to Favorites</string>
-    <string name="btn_view_favorites">View Favorites</string>
-
-    <!-- Dictionary Detail Activity -->
-    <string name="detail_title">Dictionary Item Detail</string>
-    <string name="btn_delete_from_favorites">Delete from Favorites</string>
-
-    <!-- Menu Items -->
-    <string name="menu_help">Help</string>
-    <string name="menu_clear_history">Clear Search History</string>
-
-    <!-- Dialog Messages -->
-    <string name="dialog_confirmation_title">Confirmation</string>
-    <string name="dialog_confirmation_message">Are you sure you want to delete this item?</string>
-    <string name="dialog_positive_button">Yes</string>
-    <string name="dialog_negative_button">No</string>
-
-    <!-- Toast Messages -->
-    <string name="toast_added_to_favorites">Added to Favorites</string>
-    <string name="toast_removed_from_favorites">Removed from Favorites</string>
-
-    <!-- Snackbar Messages -->
-    <string name="snackbar_deleted_from_favorites">Item deleted from Favorites</string>
-
-    <!-- Alert Dialog Messages -->
-    <string name="alert_dialog_help_title">Help</string>
-    <string name="alert_dialog_help_message">Instructions on how to use the application...</string>
-    <string name="hint_enter_word">enter a word....</string>
+    <string name="app_name">Dictionary</string>
+    <string name="action_launch_dictionary">Launch Dictionary</string>
+    <string name="enter_word_hint">Enter a word...</string>
+    <string name="lookup">Look Up</string>
+    <string name="view_favorites">View Favorites</string>
+    <string name="save_to_favorites">Save to Favorites</string>
+    <string name="definition">Definition</string>
+    <string name="delete_all_favorites">Delete All Favorites</string>
+    <string name="confirm_delete_all_favorites">Are you sure you want to delete all favorite definitions?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="definition_deleted">Definition deleted</string>
+    <string name="undo">UNDO</string>
+    <string name="all_definitions_deleted">All word definitions deleted</string>
+    <string name="error_parsing_json">Error parsing JSON response</string>
+    <string name="error_fetching_data">Error fetching data</string>
+    <string name="please_enter_a_word">Please enter a word</string>
 </resources>
