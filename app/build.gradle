@@ -43,14 +43,11 @@ dependencies {
     testImplementation 'junit:junit:4.13.2' // Updated to the latest stable version
 
     // AndroidX Test
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.0-alpha03'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.0-alpha03'
 
     androidTestImplementation 'androidx.test:runner:1.4.0' // Updated for the latest version
-    androidTestImplementation 'androidx.test:rules:1.4.0' // Updated for the latest version
+    androidTestImplementation 'androidx.test:rules:1.6.0-alpha03' // Updated for the latest version
     androidTestImplementation 'androidx.room:room-testing:2.4.2'
 
 }
-
-// Note: Ensure you remove any duplicate dependencies to avoid build issues.
-

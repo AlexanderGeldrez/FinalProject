@@ -13,7 +13,8 @@
     <string name="definition_deleted">Définition supprimée</string>
     <string name="undo">ANNULER</string>
     <string name="all_definitions_deleted">Toutes les définitions de mots ont été supprimées</string>
-    <string name="error_parsing_json">Erreur lors de l'analyse de la réponse JSON</string>
+    <string name="error_parsing_json">Erreur lors de lanalyse de la réponse </string>
     <string name="error_fetching_data">Erreur lors de la récupération des données</string>
     <string name="please_enter_a_word">Veuillez entrer un mot</string>
+    <string name="toolbar">toolbar</string>
 </resources>

@@ -1,88 +1,99 @@
 package algonquin.cst2335.finalproject;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
 import algonquin.cst2335.finalproject.R;
-public class FavActivity  extends AppCompatActivity {
 
-        private RecyclerView favoritesRecyclerView;
-        private FavAdapter favoritesAdapter; // Ensure this adapter works with WordDefinition objects
-        private AppDatabase db;
-        private View snackbarContainer;
+/**
+ * This activity displays a list of favorite word definitions.
+ * Users can delete individual favorites or all favorites.
+ */
+public class FavActivity extends AppCompatActivity {
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_favorites_dictionary); // Use the correct layout
-            snackbarContainer = findViewById(R.id.snackbar_container);
+    private RecyclerView favoritesRecyclerView;
+    private FavAdapter favoritesAdapter; // Ensure this adapter works with WordDefinition objects
+    private AppDatabase db;
+    private View snackbarContainer;
 
-            db = AppDatabase.getDatabase(getApplicationContext());
-            favoritesRecyclerView = findViewById(R.id.favoritesRecyclerView);
-            favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_favorites_dictionary); // Use the correct layout
+        snackbarContainer = findViewById(R.id.snackbar_container);
 
-            favoritesAdapter = new FavAdapter(this, new ArrayList<>(), new FavAdapter.OnItemClickListener() {
-                @Override
-                public void onDeleteClick(int position) {
-                    WordDefinition wordDefinitionToDelete = favoritesAdapter.getWordDefinitionAt(position);
-                    deleteWordDefinition(wordDefinitionToDelete, position);
-                }
+        db = AppDatabase.getDatabase(getApplicationContext());
+        favoritesRecyclerView = findViewById(R.id.favoritesRecyclerView);
+        favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-                @Override
-                public void onReinsert(WordDefinition wordDefinition) {
-                    reinsertWordDefinition(wordDefinition);
-                }
-            });
+        favoritesAdapter = new FavAdapter(this, new ArrayList<>(), new FavAdapter.OnItemClickListener() {
+            @Override
+            public void onDeleteClick(int position) {
+                WordDefinition wordDefinitionToDelete = favoritesAdapter.getWordDefinitionAt(position);
+                deleteWordDefinition(wordDefinitionToDelete, position);
+            }
 
-            favoritesRecyclerView.setAdapter(favoritesAdapter);
+            @Override
+            public void onReinsert(WordDefinition wordDefinition) {
+                reinsertWordDefinition(wordDefinition);
+            }
+        });
 
-            db.wordDefinitionDAO().getAllWordDefinition().observe(this, wordDefinitions -> {
-                Log.d("FavoritesActivity", "Observed changes in the database");
-                favoritesAdapter.updateWordDefinitions(wordDefinitions);
-            });
-        }
+        favoritesRecyclerView.setAdapter(favoritesAdapter);
 
-        public void deleteAllFavorites(View view) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Delete All Favorites")
-                    .setMessage("Are you sure you want to delete all favorite definitions?")
-                    .setPositiveButton(android.R.string.yes, (dialog, which) -> deleteAllWordDefinitions())
-                    .setNegativeButton(android.R.string.no, null)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-        }
-
-        private void deleteWordDefinition(WordDefinition wordDefinition, int position) {
-            new Thread(() -> {
-                db.wordDefinitionDAO().delete(wordDefinition.getId()); // Assuming your DAO has a delete method that accepts an ID
-                runOnUiThread(() -> {
-                    Snackbar.make(snackbarContainer, "Definition deleted", Snackbar.LENGTH_LONG)
-                            .setAction("UNDO", v -> reinsertWordDefinition(wordDefinition))
-                            .show();
-                });
-            }).start();
-        }
-
-        private void reinsertWordDefinition(WordDefinition wordDefinition) {
-            new Thread(() -> {
-                db.wordDefinitionDAO().insert(wordDefinition);
-                runOnUiThread(() -> Log.d("FavoritesActivity", "Word definition reinserted"));
-            }).start();
-        }
-
-        private void deleteAllWordDefinitions() {
-            new Thread(() -> {
-                db.wordDefinitionDAO().deleteAll();
-                runOnUiThread(() -> Log.d("FavoritesActivity", "All word definitions deleted"));
-            }).start();
-        }
+        db.wordDefinitionDAO().getAllWordDefinition().observe(this, wordDefinitions -> {
+            Log.d("FavoritesActivity", "Observed changes in the database");
+            favoritesAdapter.updateWordDefinitions(wordDefinitions);
+        });
     }
 
+    /**
+     * Shows a confirmation dialog to delete all favorite definitions.
+     *
+     * @param view The view that triggered the action.
+     */
+    public void deleteAllFavorites(View view) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete All Favorites")
+                .setMessage("Are you sure you want to delete all favorite definitions?")
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> deleteAllWordDefinitions())
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 
+    private void deleteWordDefinition(WordDefinition wordDefinition, int position) {
+        new Thread(() -> {
+            db.wordDefinitionDAO().delete(wordDefinition.getId()); // Assuming your DAO has a delete method that accepts an ID
+            runOnUiThread(() -> {
+                Snackbar.make(snackbarContainer, "Definition deleted", Snackbar.LENGTH_LONG)
+                        .setAction("UNDO", v -> reinsertWordDefinition(wordDefinition))
+                        .show();
+            });
+        }).start();
+    }
+
+    private void reinsertWordDefinition(WordDefinition wordDefinition) {
+        new Thread(() -> {
+            db.wordDefinitionDAO().insert(wordDefinition);
+            runOnUiThread(() -> Log.d("FavoritesActivity", "Word definition reinserted"));
+        }).start();
+    }
+
+    private void deleteAllWordDefinitions() {
+        new Thread(() -> {
+            db.wordDefinitionDAO().deleteAll();
+            runOnUiThread(() -> Log.d("FavoritesActivity", "All word definitions deleted"));
+        }).start();
+    }
+}

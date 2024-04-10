@@ -10,9 +10,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+/**
+ * This class is a custom RecyclerView adapter for displaying word definitions.
+ * It binds the data to the RecyclerView and handles updates.
+ * @author Tamana Kaushal
+ */
 public class CustomAdapters extends RecyclerView.Adapter<CustomAdapters.ViewHolder> {
     private List<WordDefinition> dataList; // Now using WordDefinition
 
+    /**
+     * Constructs a CustomAdapters object with the provided data list.
+     *
+     * @param dataList The list of WordDefinition objects to display.
+     */
     public CustomAdapters(List<WordDefinition> dataList) {
         this.dataList = dataList;
     }
@@ -24,6 +34,11 @@ public class CustomAdapters extends RecyclerView.Adapter<CustomAdapters.ViewHold
         return new ViewHolder(view);
     }
 
+    /**
+     * Updates the data list and notifies the adapter to re-render the list.
+     *
+     * @param newData The new list of WordDefinition objects.
+     */
     public void updateData(List<WordDefinition> newData) {
         this.dataList = newData;
         notifyDataSetChanged(); // Notify the adapter to re-render the list
@@ -41,6 +56,9 @@ public class CustomAdapters extends RecyclerView.Adapter<CustomAdapters.ViewHold
         return dataList.size();
     }
 
+    /**
+     * ViewHolder class to hold references to the views for each item in the RecyclerView.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView wordTextView; // To display the word
         TextView definitionTextView; // To display the definition
@@ -50,6 +68,13 @@ public class CustomAdapters extends RecyclerView.Adapter<CustomAdapters.ViewHold
             wordTextView = itemView.findViewById(R.id.textViewWord);
             definitionTextView = itemView.findViewById(R.id.textViewDefinition);
         }
+
+        /**
+         * Binds the word and definition text to the corresponding TextViews.
+         *
+         * @param wordText       The word text to display.
+         * @param definitionText The definition text to display.
+         */
         public void bind(String wordText, String definitionText) {
             wordTextView.setText(wordText);
             definitionTextView.setText(definitionText);

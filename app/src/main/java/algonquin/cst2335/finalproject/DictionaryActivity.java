@@ -1,6 +1,5 @@
 package algonquin.cst2335.finalproject;
 
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,20 +10,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import algonquin.cst2335.finalproject.R;
-
+/**
+ * This activity allows users to search for word definitions using an online dictionary API.
+ * Users can also view saved favorites and save new word definitions to favorites.
+ */
 public class DictionaryActivity extends AppCompatActivity {
 
     private EditText wordInput;
@@ -54,6 +55,9 @@ public class DictionaryActivity extends AppCompatActivity {
         saveToFavoritesButton.setOnClickListener(v -> saveToFavorites());
     }
 
+    /**
+     * Look up the word definition using an online dictionary API.
+     */
     private void lookupWord() {
         String word = wordInput.getText().toString().trim();
 
@@ -86,12 +90,17 @@ public class DictionaryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Open the Favorites activity to view saved word definitions.
+     */
     private void viewFavorites() {
         Intent intent = new Intent(DictionaryActivity.this, FavActivity.class);
         startActivity(intent);
     }
 
-
+    /**
+     * Save the current word definition to favorites.
+     */
     private void saveToFavorites() {
         String word = wordInput.getText().toString().trim();
         String definition = definitionTextView.getText().toString();
@@ -110,8 +119,4 @@ public class DictionaryActivity extends AppCompatActivity {
             Toast.makeText(this, "No word to save or word not found.", Toast.LENGTH_LONG).show();
         }
     }
-
-
-
 }
-

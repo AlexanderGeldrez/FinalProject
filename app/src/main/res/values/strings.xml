@@ -16,4 +16,5 @@
     <string name="error_parsing_json">Error parsing JSON response</string>
     <string name="error_fetching_data">Error fetching data</string>
     <string name="please_enter_a_word">Please enter a word</string>
+    <string name="toolbar">toolbar</string>
 </resources>
