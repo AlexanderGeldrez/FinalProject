@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="latitude_hint">Enter Latitude</string>
+    <string name="longitude_hint">Enter Longitude</string>
+    <string name="lookup">Lookup</string>
+    <string name="show_toast">Show Toast</string>
+    <string name="show_snackbar">Show snackbar</string>
+    <string name="show_alert_dialog">Show AlertDialog</string>
+    <string name="latitude">Latitude: </string>
+    <string name="longitude">Longitude: </string>
+    <string name="sunrise">Sunrise: </string>
+    <string name="sunset">Sunset: </string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="update">Update</string>
+    <string name="favorite_locations">Favorite Locations</string>
+    <string name="no_data">No data available</string>
+    <string name="error_fetching_data">Error fetching data</string>
+    <string name="loading">Loading...</string>
+    <string name="please_wait">Please wait</string>
+    <string name="add_favorite">Add to Favorites</string>
+    <string name="remove_favorite">Remove from Favorites</string>
+    <string name="details">Details</string>
+    <string name="search_hint">Search...</string>
+    <string name="last_search">Last Search: </string>
+    <string name="mandeep_activity">Mandeep</string>
+    <string name="member1_activity">Mandeep Activity</string>
+    <string name="member2_activity">Mandeep2 Activity</string>
+    <string name="Image_of_beech">beech image</string>
+    <item name="btnDelete" type="id"/>
+    <item name="snackbar_container" type="id"/>
+    <item name="favoritesRecyclerView" type="id"/>
+    <item name="toolbarTitle" type="id"/>
+    <string name="app_name">ProjectFinal</string>
+    <item name="deleteAllButton" type="id"/>
+
+
+</resources>
